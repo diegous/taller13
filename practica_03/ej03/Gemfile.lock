@@ -5,7 +5,7 @@ GEM
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     multipart-post (1.2.0)
-    octokit (2.5.1)
+    octokit (2.4.0)
       sawyer (~> 0.5.1)
     sawyer (0.5.1)
       addressable (~> 2.3.5)
@@ -15,4 +15,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  octokit
+  octokit (= 2.4.0)

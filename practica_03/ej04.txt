@@ -1,0 +1,29 @@
+a) Gemfile.lock guarda las versiones de todas las gemas usadas la 
+  última vez que la aplicación funcó. 
+  (bundler.io/v1.3/rationale.html)
+
+
+b) La versión instalada, 2.5.1
+
+
+c)
+
+
+d)
+gem search -l octokit
+
+*** LOCAL GEMS ***
+
+octokit (2.5.1, 2.4.0)
+
+
+e) El comando sirve para instalar todas las dependencias en un 
+  servidor en producción. Instala las gemas necesarias en la 
+  carpeta vendor/. Además agrega el archivo .bundle/config que 
+  tiene la configuración local a esa app, se puede ver su contenido 
+  con "bundle config". En ese archivo me agregó automáticamente un 
+  nuevo path para mi app y deshabilitó el uso de las gemas compartidas.
+  (http://bundler.io/v1.5/bundle_install.html#deployment)
+
+
+f) 
