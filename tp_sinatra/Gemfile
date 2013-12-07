@@ -1,0 +1,19 @@
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'validates_email_format_of'
+
+gem "sqlite3"
+gem "rails"
+gem "activerecord"
+gem "micro_migrations", github: 'svenfuchs/micro_migrations'
+
+group :development do
+  gem 'rake'
+end
+
+group :test do
+  gem 'minitest', require: 'minitest/autorun'
+  gem 'rack-test'
+end
