@@ -25,15 +25,6 @@ class ModelTest < Minitest::Unit::TestCase
     assert user.valid?, "Valid user with valid email"
   end
 
-  def test_valid_booking
-    booking = Booking.new
-    refute booking.valid?, "Empty booking"
-
-    booking.start = 'aStart'
-    booking.status = 'aSatus'
-    assert booking.valid?, "Valid booking"
-  end
-
   def test_valid_resource
     resource = Resource.new
     refute resource.valid?, "Empty resource"
@@ -41,5 +32,33 @@ class ModelTest < Minitest::Unit::TestCase
     resource.name = "aName"
     resource.description = "My description"
     assert resource.valid?, "Valid resource"
+  end
+
+  def test_valid_booking
+    booking = Booking.new
+    refute booking.valid?, "Empty booking"
+
+    user = User.new
+    resource = Resource.new
+
+    booking.user = user
+    booking.resource = resource
+    booking.start = 'aStart'
+    refute booking.valid?, "Booking missing status"
+
+    booking.status = 'aSatus'
+    booking.user = nil
+    refute booking.valid?, "Booking missing user"
+
+    booking.user = user 
+    booking.resource = nil
+    refute booking.valid?, "Booking missing resource"
+
+    booking.resource = resource
+    booking.start = nil
+    refute booking.valid?, "Booking missing start"
+    
+    booking.start = 'aStart'
+    assert booking.valid?, "Valid booking"
   end
 end

@@ -41,3 +41,23 @@ Migrating to AddUsernameToUser (20131209060611)
   [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to RenameBookingColumns (20131209191857)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (27.9ms)[0m  CREATE TEMPORARY TABLE "abookings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "start" varchar(255), "end" varchar(255), "status" varchar(255), "resource_id" integer, "users_id" integer) 
+  [1m[36m (14.3ms)[0m  [1mSELECT * FROM "bookings"[0m
+  [1m[35m (0.5ms)[0m  DROP TABLE "bookings"
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "bookings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "start" varchar(255), "end" varchar(255), "status" varchar(255), "resource_id" integer, "users_id" integer) [0m
+  [1m[35m (0.2ms)[0m  SELECT * FROM "abookings"
+  [1m[36m (0.3ms)[0m  [1mDROP TABLE "abookings"[0m
+  [1m[35m (0.4ms)[0m  CREATE TEMPORARY TABLE "abookings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "start" varchar(255), "end" varchar(255), "status" varchar(255), "resource_id" integer, "user_id" integer) 
+  [1m[36m (0.2ms)[0m  [1mSELECT * FROM "bookings"[0m
+  [1m[35m (0.4ms)[0m  DROP TABLE "bookings"
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "bookings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "start" varchar(255), "end" varchar(255), "status" varchar(255), "resource_id" integer, "user_id" integer) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "abookings"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "abookings"[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20131209191857"]]
+  [1m[36m (187.2ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
