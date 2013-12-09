@@ -1,0 +1,25 @@
+U:2ActiveRecord::ConnectionAdapters::SchemaCache[
+l+¡)O{	I"schema_migrations:ET[o:4ActiveRecord::ConnectionAdapters::SQLite3Column:
+@nameI"version;T:@sql_typeI"varchar(255);T:
+@nullF:@limitiÿ:@precision0:@scale0:
+@type:string:@default0:@default_function0:@primary0:@coder0I"
+users;T[o;;I"id;T;	I"INTEGER;T;
+F;0;0;0;:integer;0;0;0;0o;;I"
+email;T;	I"varchar(255);T;
+T;iÿ;0;0;;;0;0;0;0o;;I"username;T;	I"varchar(255);T;
+T;iÿ;0;0;;;0;0;0;0I"bookings;T[o;;I"id;T;	I"INTEGER;T;
+F;0;0;0;;;0;0;0;0o;;I"
+start;T;	I"varchar(255);T;
+T;iÿ;0;0;;;0;0;0;0o;;I"end;T;	I"varchar(255);T;
+T;iÿ;0;0;;;0;0;0;0o;;I"status;T;	I"varchar(255);T;
+T;iÿ;0;0;;;0;0;0;0o;;I"resources_id;T;	I"integer;T;
+T;0;0;0;;;0;0;0;0o;;I"users_id;T;	I"integer;T;
+T;0;0;0;;;0;0;0;0I"resources;T[o;;I"id;T;	I"INTEGER;T;
+F;0;0;0;;;0;0;0;0o;;I"	name;T;	I"varchar(255);T;
+T;iÿ;0;0;;;0;0;0;0o;;I"description;T;	I"	text;T;
+T;0;0;0;:	text;0;0;0;0{	I"schema_migrations;T{I"version;T@I"
+users;T{I"id;T@I"
+email;T@I"username;T@I"bookings;T{I"id;T@I"
+start;T@I"end;T@!I"status;T@$I"resources_id;T@'I"users_id;T@*I"resources;T{I"id;T@/I"	name;T@2I"description;T@5{	I"schema_migrations;T0I"
+users;TI"id;TI"bookings;TI"id;TI"resources;TI"id;T{	I"schema_migrations;TTI"
+users;TTI"bookings;TTI"resources;TT

@@ -5,7 +5,7 @@ gem 'sinatra-activerecord'
 gem 'validates_email_format_of'
 
 gem "sqlite3"
-gem "rails"
+#gem "rails"
 gem "activerecord"
 gem "micro_migrations", github: 'svenfuchs/micro_migrations'
 

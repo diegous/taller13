@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131205204046) do
+ActiveRecord::Schema.define(version: 20131209060611) do
 
   create_table "bookings", force: true do |t|
     t.string  "start"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20131205204046) do
 
   create_table "users", force: true do |t|
     t.string "email"
+    t.string "username"
   end
 
 end
