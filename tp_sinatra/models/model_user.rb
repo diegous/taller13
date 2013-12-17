@@ -1,5 +1,4 @@
-#gem 'validates_email_format_of'
-# te permite usar  :email_format
+#gem 'validates_email_format_of' permite usar  :email_format
 
 class User < ActiveRecord::Base
   validates_email_format_of :email
