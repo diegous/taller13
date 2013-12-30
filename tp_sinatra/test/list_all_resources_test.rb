@@ -1,17 +1,4 @@
-require 'bundler'
-require 'sinatra'
-require 'test/unit'
-require 'rack/test'
-require 'active_record'
-require 'minitest/autorun'
-require 'database_cleaner'
-require 'validates_email_format_of'
-
-require_relative '../models/model_user.rb'
-require_relative '../models/model_booking.rb'
-require_relative '../models/model_resource.rb'
-
-require_relative '../app.rb'
+require_relative 'test_helper.rb'
 
 DatabaseCleaner.strategy = :transaction
 
@@ -34,25 +21,32 @@ class ListAllResourcesTest < Minitest::Unit::TestCase
 
   def test_empty_resource_list
     get '/resources'
-    expected = {resources: []}.to_json
 
-    assert_equal expected, last_response.body
+    pattern = {
+      resources: []
+    }
+
+    matcher = assert_json_match pattern, last_response.body
   end
 
   def test_adding_one_resource
     resource = Resource.create(name: 'Monitor', description: 'bonito')
     get '/resources'
 
-    expected = {resources: [{
-        name: resource.name, 
-        description: resource.description,
-        links: [
-          rel: "self",
-          uri: "example.org/resource/"+resource.id.to_s
-        ]
-      }]}.to_json
+    pattern = {
+      resources: [
+        {
+          name:        resource.name,
+          description: resource.description,
+          links: [
+            rel: "self",
+            uri: "example.org/resource/"+resource.id.to_s
+          ]
+        }
+      ]
+    }
 
-    assert_equal expected, last_response.body
+    matcher = assert_json_match pattern, last_response.body
   end
 
 #  def test_resource_availability

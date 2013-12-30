@@ -14,9 +14,9 @@ require 'active_record'
 #require './test/model_test.rb'
 
 
-require_relative 'models/model_user.rb'
-require_relative 'models/model_booking.rb'
-require_relative 'models/model_resource.rb'
+# require_relative 'models/model_user.rb'
+# require_relative 'models/model_booking.rb'
+# require_relative 'models/model_resource.rb'
 
 
 require 'rake/testtask'
