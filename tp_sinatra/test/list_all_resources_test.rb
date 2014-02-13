@@ -1,9 +1,5 @@
 require_relative 'test_helper.rb'
 
-DatabaseCleaner.strategy = :transaction
-
-ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: 'db/db.sqlite3'
-
 class ListAllResourcesTest < Minitest::Unit::TestCase
   include Rack::Test::Methods
 
@@ -12,6 +8,7 @@ class ListAllResourcesTest < Minitest::Unit::TestCase
   end
 
   def setup
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
   end
 
@@ -21,6 +18,7 @@ class ListAllResourcesTest < Minitest::Unit::TestCase
 
   def test_empty_resource_list
     get '/resources'
+    assert_equal 200, last_response.status
 
     pattern = {
       resources: []
@@ -29,9 +27,11 @@ class ListAllResourcesTest < Minitest::Unit::TestCase
     matcher = assert_json_match pattern, last_response.body
   end
 
-  def test_adding_one_resource
+  def test_one_element_resource_list
     resource = Resource.create(name: 'Monitor', description: 'bonito')
+    
     get '/resources'
+    assert_equal 200, last_response.status
 
     pattern = {
       resources: [
@@ -49,20 +49,28 @@ class ListAllResourcesTest < Minitest::Unit::TestCase
     matcher = assert_json_match pattern, last_response.body
   end
 
-#  def test_resource_availability
-#    get "/resources/1/availability?date=2012-05-30&limit=30"
-#    get "/resources/1/availability?date=2013-11-12&limit=3"
-#  end
-#
-#  def test_booking_a_resource
-#  end
-#
-#  def test_cancel_booking
-#  end
-#
-#  def test_authorize_a_booking
-#  end
-#
-#  def test_view_a_booking
-#  end
+  def test_ten_elements_resource_list
+    resources = (1..10).collect {|i| {name: 'n'+(i.to_s), description: 'd'+(i.to_s)}}
+    resources.each {|resource| Resource.create(name: resource[:name], description: resource[:description])}
+
+    get '/resources'
+    assert_equal 200, last_response.status
+
+    pattern = {
+      resources: 
+        resources.collect{|resource|
+          {
+            name:        resource[:name],
+            description: resource[:description],
+              links: [
+                rel: "self",
+                uri: /example.org\/resource\/\d+\z/
+              ]
+          }
+        }
+      
+    }
+
+    matcher = assert_json_match pattern, last_response.body
+  end
 end
