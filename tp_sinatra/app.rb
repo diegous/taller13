@@ -5,6 +5,8 @@ require 'jbuilder'
 require 'active_record'
 require 'validates_email_format_of'
 
+require_relative 'helpers/simple_helpers'
+
 require_relative 'models/model_user'
 require_relative 'models/model_booking'
 require_relative 'models/model_resource'
@@ -13,10 +15,34 @@ require_relative 'models/model_resource'
 ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: 'db/db.sqlite3'
 
 
+get '/resources/:resource_id' do
+  resource = Resource.find_by(id: params[:resource_id])
+
+  if resource
+    json = {
+      name: resource.name,
+      description: resource.description,
+      links: [
+        {
+          rel: "self",
+          uri: host+"/resource/"+resource.id.to_s
+        },
+        {
+          rel: "bookings",
+          uri: host+"/resource/"+resource.id.to_s+"/bookings"
+        }
+      ]
+    }
+
+    {resource: json}.to_json
+  else
+    halt 404
+  end
+end
+
+
 get '/resources' do
-  host = request.host_with_port.to_s
-  resources = Resource.all
-  processedResources = resources.collect{
+  resources = Resource.all.collect{
       |resource| {
         name: resource.name,
         description: resource.description,
@@ -27,10 +53,7 @@ get '/resources' do
       } 
     }
 
-  {resources: processedResources}.to_json
+  {resources: resources}.to_json
 end
 
-get '/' do
-  "hello world"+request.host_with_port.to_s
-end
 

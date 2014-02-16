@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131209191857) do
+ActiveRecord::Schema.define(version: 20131212232125) do
 
   create_table "bookings", force: true do |t|
-    t.string  "start"
-    t.string  "end"
-    t.string  "status"
-    t.integer "resource_id"
-    t.integer "user_id"
+    t.string   "status"
+    t.integer  "resource_id"
+    t.integer  "user_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
   end
 
   create_table "resources", force: true do |t|

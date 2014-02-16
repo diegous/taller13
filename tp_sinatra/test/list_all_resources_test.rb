@@ -68,7 +68,6 @@ class ListAllResourcesTest < Minitest::Unit::TestCase
               ]
           }
         }
-      
     }
 
     matcher = assert_json_match pattern, last_response.body
