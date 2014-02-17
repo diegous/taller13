@@ -20,4 +20,7 @@ class ResourceModelTest < Minitest::Unit::TestCase
     resource.description = "My description"
     assert resource.valid?, "Valid resource"
   end
+
+  def test_ 
+  end
 end

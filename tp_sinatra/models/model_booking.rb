@@ -24,4 +24,8 @@ class Booking < ActiveRecord::Base
       errors.add(:start_time, "Cant start in the past")
     end
   end
+
+  def self.bookings_between(aStart, anEnd)
+    where("start_time <= ? AND end_time >= ?", anEnd, aStart)
+  end
 end

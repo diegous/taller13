@@ -82,7 +82,7 @@ get '/resources/:resource_id/bookings' do
 
   my_uri = "/resources/#{params[:resource_id]}/bookings/"
 
-  hash_bookings = bookings.collect {|b| 
+  hash_bookings = bookings.map {|b| 
     {
       start:  st_time(b.start_time),
       end:    st_time(b.end_time),
@@ -91,12 +91,16 @@ get '/resources/:resource_id/bookings' do
       links: [
         make_link('self', my_uri + b.id.to_s),
         make_link('resource', "/resources/#{b.resource_id}"),
-        make_link('accept', my_uri + b.id.to_s,'PUT'),
+#        make_link('accept', my_uri + b.id.to_s,'PUT'),
+#        {
+#          rel: 'reject',
+#          uri: 'example.org/resources/3/bookings/9',
+#          method: 'DELE'
+#        }
         make_link('reject', my_uri + b.id.to_s,'DELETE'),
       ]
     }
   }
-
 
   {
     bookings: hash_bookings,
