@@ -3,7 +3,7 @@ def host
 end
 
 def st_time(aTime)
-  aTime.utc.iso8601
+  aTime.in_time_zone('UTC').iso8601
 end
 
 def make_link(rel, url, method = nil)

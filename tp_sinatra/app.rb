@@ -18,6 +18,10 @@ before do
   content_type 'application/json'
 end
 
+before '/resources/:resource_id*' do
+  halt 404 unless Resource.find_by(id: params[:resource_id])
+end
+
 get '/resources/:resource_id' do
   resource = Resource.find_by(id: params[:resource_id])
 
@@ -60,7 +64,7 @@ get '/resources' do
 end
 
 get '/resources/:resource_id/bookings' do
-  if params['date']
+  if params['date'] then
     date = params['date'].to_time
     halt 400 if not date
   else
@@ -101,7 +105,188 @@ get '/resources/:resource_id/bookings' do
   {
     bookings: hash_bookings,
     links: [
-      make_link('self', "/resources/#{params[:resource_id]}/bookings?date=#{date}&limit=#{limit}&status=#{status}")
+      make_link('self', "/resources/#{params[:resource_id]}/bookings?date=#{date.to_date}&limit=#{limit}&status=#{status}")
     ]
   }.to_json
 end
+
+
+get '/resources/:resource_id/availability' do
+  if params['date'] then
+    date = params['date'].to_date
+    halt 400 if not date
+  else
+    halt 400 
+  end
+
+  if params['limit'] then
+    limit = params['limit'].to_i
+    halt 400 if not limit
+  else
+    halt 400
+  end
+
+  resource = Resource.find_by(id: params[:resource_id])
+
+  myHash = resource.availability(st_time(date), st_time(date + limit)).map {|s|
+    s.merge(links: [
+        {
+          rel: 'book', 
+          link: host+"/resources/#{resource.id}/bookings",
+          method: 'POST'
+        },
+        make_link('resource', "/resources/#{resource.id}")
+
+      ]
+    )
+  }
+
+  {
+    availability: myHash,
+    links: [
+      {
+        rel: 'self', 
+        link: host+"/resources/#{resource.id}/availability?date=#{params['date']}&limit=#{limit}"
+      }
+    ]
+  }.to_json
+
+end
+
+post '/resources/:resource_id/bookings' do
+  if (from = params['from']) && from.to_time then
+    from = st_time(from)
+  else
+    halt 400 
+  end
+
+  if (to = params['to']) && to.to_time then
+    to = st_time(to)
+  else
+    halt 400 
+  end
+
+  r_id = params[:resource_id]
+
+  book = Booking.bookings_between(from, to).where(resource_id: r_id)
+
+  halt 409 unless book
+
+  booking = Booking.create(
+    resource: Resource.find_by(id: r_id),
+    start_time: from,
+    end_time: to,
+    status: 'pending'
+  )
+
+  status 201
+
+  pattern = {
+    book:
+    {
+      from: from,
+      to: to,
+      status: 'pending',
+      links: [
+        {
+          rel: "self",
+          url: host+"/resources/#{r_id}/bookings/#{booking.id}",
+        },
+        {
+          rel: "accept",
+          uri: host+"/resource/#{r_id}/bookings/#{booking.id}",
+          method: 'PUT'
+        },
+        {
+          rel: "reject",
+          uri: host+"/resource/#{r_id}/bookings/#{booking.id}",
+          method: 'DELETE'
+        }
+      ]
+    }
+  }.to_json
+end
+
+delete '/resources/:resource_id/bookings/:booking_id' do
+  booking = Booking.find_by(id: params[:booking_id])
+
+  halt 404 unless booking
+
+  booking.destroy
+
+  nil
+end
+
+put '/resources/:resource_id/bookings/:booking_id' do
+  booking = Booking.find_by(id: params[:booking_id])
+  halt 404 unless booking
+  
+  r_id = params[:resource_id]
+  halt 409 if Booking.bookings_between(booking.start_time.to_time,booking.end_time.to_time).where("resource_id=#{r_id} AND id!=#{booking.id}").to_a != []
+
+  booking.status = 'approved'
+  booking.save
+
+  {
+    book:
+    {
+      from: st_time(booking.start_time),
+      to: st_time(booking.end_time),
+      status: "apporved",
+      links: [
+        {
+          rel: "self",
+          url: host+"/resources/#{r_id}/bookings/#{booking.id}"
+        },
+        {
+          rel: "accept",
+          uri: host+"/resource/#{r_id}/bookings/#{booking.id}",
+          method: "PUT"
+        },
+        {
+          rel: "reject",
+          uri: host+"/resource/#{r_id}/bookings/#{booking.id}",
+          method: "DELETE"
+        },
+        {
+          rel: "resource",
+          url: host+"/resources/#{r_id}"
+        }
+      ]
+    }
+  }.to_json
+end
+
+get '/resources/:resource_id/bookings/:booking_id' do
+  booking = Booking.find_by(id: params[:booking_id])
+  halt 404 unless booking
+
+  r_id = params[:resource_id]
+
+  {
+    from: st_time(booking.start_time),
+    to: st_time(booking.end_time),
+    status: booking.status,
+    links: [
+      {
+        rel: "self",
+        url: host+"/resources/#{r_id}/bookings/#{booking.id}"
+      },
+      {
+        rel: "resource",
+        uri: host+"/resource/#{r_id}"
+      },
+      {
+        rel: "accept",
+        uri: host+"/resource/#{r_id}/bookings/#{booking.id}",
+        method: "PUT"
+      },
+      {
+        rel: "reject",
+        uri: host+"/resource/#{r_id}/bookings/#{booking.id}",
+        method: "DELETE"
+      },
+    ]
+  }.to_json
+end
+

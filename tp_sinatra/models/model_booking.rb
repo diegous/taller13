@@ -7,7 +7,7 @@ class Booking < ActiveRecord::Base
   end
 
   validates :status, inclusion: {in: %w(pending approved)}
-  validates :user, :resource, :start_time, :end_time, :status, presence: true
+  validates :resource, :start_time, :end_time, :status, presence: true
 
   validate :end_cannot_be_before_start
 
@@ -27,5 +27,9 @@ class Booking < ActiveRecord::Base
 
   def self.bookings_between(aStart, anEnd)
     where("start_time <= ? AND end_time >= ?", anEnd, aStart)
+  end
+
+  def self.strict_between(aStart, anEnd)
+    where("start_time >= ? AND end_time <= ?", aStart, anEnd)
   end
 end
