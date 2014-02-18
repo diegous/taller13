@@ -1,18 +1,6 @@
-require 'bundler'
-require 'sinatra'
-require 'test/unit'
-require 'active_record'
-require 'minitest/autorun'
-require 'validates_email_format_of'
-
-require_relative '../models/model_user.rb'
-require_relative '../models/model_booking.rb'
-require_relative '../models/model_resource.rb'
-require_relative '../helpers/simple_helpers.rb'
+require_relative 'test_helper'
 
 T_NOW = DateTime.now
-
-ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: 'db/db.sqlite3'
 
 class BookingModelTest < Minitest::Unit::TestCase
   def setup

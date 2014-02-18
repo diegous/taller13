@@ -1,21 +1,4 @@
-require 'bundler'
-require 'sinatra'
-require 'test/unit'
-require 'rack/test'
-require 'active_record'
-require 'minitest/autorun'
-require 'database_cleaner'
-require 'validates_email_format_of'
-
-require_relative '../models/model_user.rb'
-require_relative '../models/model_booking.rb'
-require_relative '../models/model_resource.rb'
-
-require_relative '../app.rb'
-
-DatabaseCleaner.strategy = :transaction
-
-ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: 'db/db.sqlite3'
+require_relative 'test_helper'
 
 class ListResourceBookingsTest < Minitest::Unit::TestCase
   include Rack::Test::Methods
@@ -25,6 +8,7 @@ class ListResourceBookingsTest < Minitest::Unit::TestCase
   end
 
   def setup
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
   end
 

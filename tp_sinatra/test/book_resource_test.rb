@@ -19,7 +19,7 @@ class OneResourceTest < Minitest::Unit::TestCase
     DatabaseCleaner.clean
   end
 
-  def aatest_book_resource
+  def test_book_resource
     @t_now = DateTime.now
 
     post "/resources/#{@resource.id}/bookings?from=#{st_time(@t_now + 1)}&to=#{st_time(@t_now + 2)}"

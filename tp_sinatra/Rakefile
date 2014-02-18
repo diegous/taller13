@@ -1,25 +1,6 @@
-require 'bundler'
-require 'sinatra'
-require 'test/unit'
-require 'active_record'
-require 'minitest/autorun'
-require 'validates_email_format_of'
-
-require 'bundler'
-require 'micro_migrations'
-require 'sinatra/activerecord/rake'
-require 'validates_email_format_of'
-#require './app'
-require 'active_record'
-#require './test/model_test.rb'
-
-
-# require_relative 'models/model_user.rb'
-# require_relative 'models/model_booking.rb'
-# require_relative 'models/model_resource.rb'
-
-
 require 'rake/testtask'
+require 'sinatra/activerecord/rake'
+require './app'
 
 Rake::TestTask.new do |t|
   t.libs << 'test'
